@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>电子钟</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        body{
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCan" width="1366" style="border: 1px solid #000"></canvas>
+    <script src="./assets/js/baseClass.js"></script>
+    <script src="./assets/js/digit.js"></script>
+    <script src="./assets/js/ball.js"></script>
+
+    <script src="./assets/js/clock.js"></script>
+    <script>
+        window.onload = _ => {
+            const dom = document.querySelector("#myCan")
+            dom.height = window.innerHeight - 10;
+            dom.style.height = window.innerHeight - 10 + "px"
+            window.myClock = new Clock({
+                el: "#myCan",
+                textColor: "blue",
+                // endTime: new Date(2018, 4, 7, 13, 49, 10),
+                end: function () {
+                    console.log("timeEnd")
+                }
+            })
+
+        }
+    </script>
+</body>
+
+</html>
