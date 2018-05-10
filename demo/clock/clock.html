@@ -13,11 +13,14 @@
         body{
             background: black;
         }
+        canvas{
+            margin: 0 auto;
+        }
     </style>
 </head>
 
-<body>
-    <canvas id="myCan" width="1366" style="border: 1px solid #000"></canvas>
+<body style="width: 100%;height: 100%;">
+    <canvas id="myCan"  height="100%" style="border: 1px solid #000"></canvas>
     <script src="./assets/js/baseClass.js"></script>
     <script src="./assets/js/digit.js"></script>
     <script src="./assets/js/ball.js"></script>
@@ -26,8 +29,10 @@
     <script>
         window.onload = _ => {
             const dom = document.querySelector("#myCan")
-            dom.height = window.innerHeight - 10;
-            dom.style.height = window.innerHeight - 10 + "px"
+            dom.height = window.innerHeight-10;
+            dom.style.height = window.innerHeight-10+"px";
+            dom.width = document.body.clientWidth-10;
+ dom.style.width = document.body.clientWidth-10;
             window.myClock = new Clock({
                 el: "#myCan",
                 textColor: "blue",

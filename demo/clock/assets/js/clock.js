@@ -10,17 +10,19 @@ class Clock extends MyCan {
         this.clockTime = [0, 0, 10, 0, 0, 10, 0, 0] //初始化始终渲染数组 时时 冒号 分分 冒号 秒秒
 
         window.requestAnimationFrame(this.init.bind(this))
+          
     }
     //
     init() {
+         const {
+             ballArray,
+             width
+         } = this;
+      
         const time = this.endTime ? this.getCurShowTime(this.endTime) : this.getTime();
-        const startX = 100;
+        const startX = Math.round(width/10); //时钟最左侧坐标
         const startY = 50;
-        const r = 8 //半径
-        const {
-            ballArray,
-            width
-        } = this;
+        const r = Math.round(width * 4 / 5 / 108) - 1.8 //半径
         // GC 清楚出了屏幕外的小球实例
         let cnt = 0;
         if (ballArray.length > 1)
@@ -28,17 +30,16 @@ class Clock extends MyCan {
                 if (ballArray[i].ball.x + ballArray[i].ball.r > 0 && (ballArray[i].ball.x - ballArray[i].ball.r) < width) //还停留在屏幕内小球
                     ballArray[cnt++] = ballArray[i]
 
-        while (ballArray.length>cnt) {
+        while (ballArray.length > cnt) {
             ballArray.pop()
         }
-       
 
         for (let i in time) {
             if (time[time.length - i] != this.clockTime[this.clockTime.length - i]) { //秒数不同 发生重绘
 
                 this.clockTime[this.clockTime.length - i] = time[time.length - i]; //更新本次时间
 
-                this.addBall(Math.max(time[time.length - i], 0), startX + (time.length - i) * 15 * (r + 1), startY)
+                this.addBall(Math.max(time[time.length - i], 0), startX + (time.length - i) * 15 * (r + 1), startY, r)
 
             }
 
@@ -52,7 +53,7 @@ class Clock extends MyCan {
         for (let i in time) {
 
             /*Math.max(time[i],0)保证时间最小为0*/
-            this.drawDigit(Math.max(time[i], 0), startX + i * 15 * (r + 1), startY)
+            this.drawDigit(Math.max(time[i], 0), startX + i * 15 * (r + 1), startY,r)
         };
 
         this.upDataBalls();
@@ -68,7 +69,7 @@ class Clock extends MyCan {
     }
     // 小球动画
     addBall(drawNum, startX, startY, r = 8) {
-
+        console.log(r)
         const {
             ctx,
             width,
