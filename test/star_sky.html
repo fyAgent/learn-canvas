@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>绘制星空</title>
+</head>
+
+<body>
+    <div id="canvasBox">
+
+    </div>
+
+    <script>
+        class MyCan {
+            constructor(param) {
+                const {
+                    el
+                } = param;
+
+                this.el = document.querySelector(el);
+                this.can = document.createElement("canvas");
+                this.width = this.can.width = this.el.offsetWidth;
+                this.height = this.can.height = this.el.offsetHeight;
+
+                this.el.appendChild(this.can)
+                this.ctx = this.can.getContext("2d");
+                this.init();
+            }
+            init() {
+                const {
+                    width,
+                    height
+                } = this;
+                this.drawRect(0, 0, width, height);
+                for (let i = 0; i < 100; i++) {
+                    const R = Math.random() * 10 + 4,
+
+                        marginLeft = Math.random() * width,
+                        marginTop = Math.random() * height*0.65,
+                        rotate = Math.random() * 360;
+                    this.drawStar(R, marginLeft, marginTop, rotate, "rgb(255,178,29 )", "#000")
+                }
+            }
+            // 绘制矩形
+            drawRect(marginLeft, marginTop, width, height, fillColor = "#000", strokeColor) {
+                const {
+                    ctx
+                } = this;
+
+
+                ctx.beginPath();
+                var linear = ctx.createLinearGradient(0, 0, 0, height)
+                linear.addColorStop(0, "#000");
+                linear.addColorStop(1, "#035");
+                ctx.fillStyle = linear;
+                ctx.fillRect(marginLeft, marginTop, width, height);
+
+                ctx.closePath()
+                if (fillColor) {
+                    ctx.fillStyle = fillColor;
+                    ctx.fill()
+                };
+                if (strokeColor) {
+                    ctx.strokeStyle = strokeColor;
+                    ctx.stroke();
+                }
+
+            }
+
+            // 画星星
+            drawStar(R, marginLeft, marginTop, rotate = 0, fillColor, strokeColor, lineWidth = 1) { //大圆半径 小圆半径 x坐标 y坐标 旋转角度
+
+
+                const {
+                    ctx
+                } = this;
+
+
+
+                ctx.save()
+
+                ctx.translate(marginLeft, marginTop);
+                ctx.rotate(rotate);
+
+                ctx.scale(R / 100, R / 100)
+                this.fillPath(ctx);
+
+
+                // ctx.lineJoin = "miter" //线条相交形式 默认 miter 尖角 round圆角 bevel斜截 ctx.miterLimit = 30 //只有 lineJoin为miter即 默认的时候并且小于设置值才会生效 超出为bevel 默认值是10
+                if (fillColor) {
+                    ctx.fillStyle = fillColor;
+                    ctx.fill()
+                }
+                if (strokeColor) {
+                    ctx.strokeStyle = strokeColor;
+                    ctx.lineWidth = lineWidth;
+                    ctx.stroke();
+                }
+                ctx.restore()
+            }
+            // 绘制路径
+            fillPath(ctx) {
+                let arr = [];
+                const angle = 360 / 5;
+                ctx.beginPath()
+                for (let i = 0; i < 5; i++) {
+                    const R = 100;
+                    const r = 50;
+                    const outAngle = ((90 - angle) + angle * i) / 180 * Math.PI; //五角星外圈大顶点坐标
+                    const outerX = R * Math.cos(outAngle); //外面大园横坐标
+                    const outerY = -R * Math.sin(outAngle); //外面大圆纵坐标
+                    const innerAngle = (54 + angle * i) / 180 * Math.PI;
+                    const innerX = r * Math.cos(innerAngle); //里面小圆横坐标
+                    const innerY = -r * Math.sin(innerAngle); //里面小圆纵坐标
+                    arr.push({
+                        x: outerX,
+                        y: outerY
+                    })
+                    arr.push({
+                        x: innerX,
+                        y: innerY
+                    })
+                    ctx.lineTo(outerX, outerY)
+                    ctx.lineTo(innerX, innerY)
+                }
+                ctx.closePath();
+            }
+
+        }
+        window.onload = () => {
+            const box = document.querySelector("#canvasBox");
+            box.style.width = document.body.clientWidth + "px";
+            box.style.height = window.innerHeight + "px";
+            window.myCan = new MyCan({
+                el: "#canvasBox"
+            })
+        }
+    </script>
+</body>
+
+</html>

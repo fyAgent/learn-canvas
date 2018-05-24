@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>从画线开始</title>
+    <style>
+        #canvasBox {
+            margin: 100px auto;
+            width: 1000px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvasBox">
+
+    </div>
+
+
+
+    <script>
+        class MyCan {
+            constructor(param) {
+                const {
+                    el
+                } = param;
+
+                this.el = document.querySelector(el);
+                this.can = document.createElement("canvas");
+                this.can.width = this.el.offsetWidth;
+                this.can.height = this.el.offsetHeight;
+                this.el.appendChild(this.can)
+                this.ctx = this.can.getContext("2d");
+                this.init();
+            }
+            init() {
+                // this.drawLine(); // 线
+                // this.drawArrow(); // 箭头
+                // this.drawRect(); // 绘制矩形
+                // this.testLineCap() //测试线头
+                this.drawStar(100, 10, 200, 100, 30) //画星星
+
+            }
+
+            // 线
+            drawLine() {
+                const {
+                    ctx
+                } = this;
+                ctx.moveTo(100, 100)
+                ctx.lineTo(700, 700)
+                ctx.stroke()
+            }
+            // 箭头
+            drawArrow() {
+                const {
+                    ctx
+                } = this;
+                ctx.beginPath()
+                // lineto 和beginpath连着使用相当于moveto
+                ctx.lineTo(100, 100)
+                ctx.lineTo(200, 100)
+                ctx.lineTo(200, 50)
+                ctx.lineTo(250, 125)
+                ctx.lineTo(200, 200)
+                ctx.lineTo(200, 150)
+                ctx.lineTo(100, 150)
+                // lineTo 和 closePath连着用会自动封闭
+                ctx.closePath()
+
+                ctx.fillStyle = "yellow";
+                ctx.strokeStyle = "blue";
+                ctx.lineWidth = 10;
+                ctx.fill() //先填充后画线不会影响linewidth;
+                ctx.stroke();
+
+            }
+            // 绘制矩形
+            drawRect() {
+                const {
+                    ctx
+                } = this;
+                ctx.fillStyle = "red";
+
+                // ctx.beginPath();
+                ctx.fillRect(100, 100, 100, 100);
+
+                // ctx.closePath()
+                ctx.fill()
+            }
+            //测试线头
+            testLineCap() {
+                const {
+                    ctx
+                } = this;
+                ctx.lineWidth = 20;
+
+                ctx.beginPath()
+                ctx.lineTo(100, 100);
+                ctx.lineTo(600, 100);
+                // ctx.closePath()
+
+                ctx.strokeStyle = "red";
+                ctx.stroke()
+
+                ctx.beginPath()
+                ctx.lineTo(100, 200)
+                ctx.lineTo(600, 200)
+                // ctx.closePath()
+
+                ctx.strokeStyle = "yellow";
+                ctx.lineCap = "round"
+                ctx.stroke()
+
+                ctx.beginPath()
+                ctx.lineTo(100, 300)
+                ctx.lineTo(200, 300)
+                // ctx.closePath()
+
+
+                ctx.strokeStyle = "blue";
+                ctx.lineCap = "square"
+                ctx.stroke()
+
+
+                ctx.beginPath()
+                ctx.lineTo(100, 100)
+                ctx.lineTo(100, 500)
+                ctx.closePath()
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "black";
+                ctx.stroke()
+
+
+                ctx.beginPath()
+                ctx.lineTo(200, 100)
+                ctx.lineTo(200, 500)
+                ctx.closePath()
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "black";
+                ctx.stroke()
+
+
+
+
+            }
+            // 画星星
+            drawStar(R, r, marginLeft, marginTop, rotate = 0, color = "#000") { //大圆半径 小圆半径 x坐标 y坐标 旋转角度
+
+
+                const {
+                    ctx
+                } = this;
+                const angle = 360 / 5;
+
+                let arr = [];
+
+                ctx.beginPath()
+                ctx.lineJoin = "miter" //线条相交形式 默认 miter 尖角 round圆角 bevel斜截
+                ctx.miterLimit = 30 //只有 lineJoin为miter即 默认的时候并且小于设置值才会生效  超出为bevel 默认值是10  
+                for (let i = 0; i < 5; i++) {
+                    const outAngle = ((90 - rotate - angle) + angle * i) / 180 * Math.PI; //五角星外圈大顶点坐标
+                    const outerX = R * Math.cos(outAngle); //外面大园横坐标
+                    const outerY = -R * Math.sin(outAngle); //外面大圆纵坐标
+                    const innerAngle = (54 - rotate + angle * i) / 180 * Math.PI;
+                    const innerX = r * Math.cos(innerAngle); //里面小圆横坐标
+                    const innerY = -r * Math.sin(innerAngle); //里面小圆纵坐标
+                    arr.push({
+                        x: outerX,
+                        y: outerY
+                    })
+                    arr.push({
+                        x: innerX,
+                        y: innerY
+                    })
+                    ctx.lineTo(outerX + marginLeft, outerY + marginTop)
+                    ctx.lineTo(innerX + marginLeft, innerY + marginTop)
+                }
+                ctx.closePath()
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+            }
+        };
+        window.onload = () => {
+            window.myCan = new MyCan({
+                el: "#canvasBox"
+            })
+        }
+    </script>
+</body>
+
+</html>

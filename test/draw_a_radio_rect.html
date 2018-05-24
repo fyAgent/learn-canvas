@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>圆角矩形</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #can {
+
+            margin: 100px auto 0;
+            display: block;
+            border: 1px solid #000;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="full">
+        <canvas id="can"></canvas>
+    </div>
+
+
+
+    <script>
+        (function () {
+
+            var can = document.querySelector("#can");
+            can.width = 450;
+            can.height = 450;
+            var ctx = can.getContext("2d");
+
+
+
+            fillRoundRect(ctx, 0, 0, 450, 450, 10, "#bbada0")
+            // strokeRoundRect(ctx, 300, 100, 200, 100, 50, "blue")
+            for (var i = 0; i < 4; i++)
+                for (var j = 0; j < 4; j++)
+                    fillRoundRect(ctx,  10+110 * j, 10+110 * i, 100, 100, 5, "#ccc0b3")
+
+
+
+
+            function fillRoundRect(ctx, sx, sy, w, h, r, fillColor) {
+                ctx.save()
+                ctx.fillStyle = fillColor || "#000";
+                drawPath(ctx, sx, sy, w, h, r)
+                ctx.fill()
+                ctx.restore();
+            }
+
+            function strokeRoundRect(ctx, sx, sy, w, h, r, strokeColor, line) {
+                ctx.save()
+                ctx.strokeStyle = strokeColor || "#000";
+                ctx.lineWidth = line || 1
+                drawPath(ctx, sx, sy, w, h, r);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+
+            function drawPath(ctx, sx, sy, w, h, r) { //所需要画出的矩形的 起点横纵坐标  宽高度以及圆角半径
+                if (r * 2 > Math.min(w, h)) return;
+                var _w = w - r; //直线段宽度长度
+                var _h = h - r; //直线段高度长度
+                var c1 = [r, r]; //左上角圆心坐标
+                var c2 = [_w, r] //右上角圆心坐标
+                var c3 = [_w, _h] //右下
+                var c4 = [r, _h] //左下
+                var l1 = [0, r]
+                var l2 = [w - r, 0]
+                var l3 = [w, h]
+                var l4 = [r, h]
+                ctx.beginPath();
+                ctx.translate(sx, sy)
+                ctx.arc(c3[0], c3[1], r, 0, Math.PI / 2)
+                ctx.lineTo(l4[0], l4[1])
+                ctx.arc(c4[0], c4[1], r, Math.PI / 2, Math.PI)
+                ctx.lineTo(l1[0], l1[1])
+                ctx.arc(c1[0], c1[1], r, Math.PI, Math.PI * 1.5)
+                ctx.lineTo(l2[0], l2[1])
+                ctx.arc(c2[0], c2[1], r, Math.PI * 1.5, Math.PI * 2)
+
+                ctx.closePath();
+
+
+            }
+
+
+
+
+
+
+
+
+
+        })()
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>绘制七巧板</title>
+</head>
+
+<body>
+    <canvas id="myCan" width="1366" height="500"></canvas>
+    <script>
+        class LearnCanvas {
+            constructor() {
+                this.el = document.querySelector("#myCan");
+                this.ctx = this.el.getContext("2d");
+                this.width = this.el.offsetWidth;
+                this.height = this.el.offsetHeight
+                this.initArr();
+            }
+            initArr() { //初始化数据
+                const {
+                    ctx,
+                    width,
+                    height
+                } = this;
+                let w, t, r, b, l, c; //宽度  上 右 下 左 坐标点  中心点
+
+                w = Math.min(width, height);
+                t = [(width - w) / 2, (height - w) / 2]
+                r = [t[0] + w, t[1]]
+                b = [t[0] + w, t[1] + w]
+                l = [t[0], t[1] + w]
+                c = [width / 2, height / 2];
+                console.log(c)
+                const arr = [{
+                        path: [t, r, b, l, t],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "#000",
+                        stroke: true,
+                        fill: false,
+                    },
+                    {
+                        path: [
+                            t,
+                            c,
+                            l,
+                            t
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(115,172,199)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            t,
+                            c,
+                            r,
+                            t
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(192,238,88)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            r, [b[0], (b[1] + r[1]) / 2],
+                            [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2],
+                            [(b[0] + c[0]) / 2, (c[1] + r[1]) / 2],
+                            r,
+
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(204,77,98)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            [(b[0] + c[0]) / 2, (c[1] + r[1]) / 2],
+                            [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2],
+                            c, [(b[0] + c[0]) / 2, (c[1] + r[1]) / 2],
+
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(227,235,10)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            [b[0], (b[1] + r[1]) / 2],
+                            b, [c[0], b[1]],
+                            [b[0], (b[1] + r[1]) / 2],
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(219,197,26)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            [(c[0] + l[0]) / 2, (l[1] + c[1]) / 2],
+                            c, [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2],
+                            [c[0], b[1]],
+                            [(c[0] + l[0]) / 2, (l[1] + c[1]) / 2],
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(155,143,185)",
+                        stroke: true,
+                        fill: true,
+                    },
+                    {
+                        path: [
+                            l, [(c[0] + l[0]) / 2, (l[1] + c[1]) / 2],
+                            [c[0], b[1]], l
+                        ],
+                        strokeColor: "#000",
+                        lineWidth: 1,
+                        fillColor: "rgb(217,143,194)",
+                        stroke: true,
+                        fill: true,
+                    },
+                ];
+                this.draw(arr)
+            }
+            draw(arr) {
+
+                const {
+                    ctx
+                } = this;
+                for (let i in arr) {
+                    const {
+                        path, //笔画
+                        stroke, //描边
+                        strokeColor,
+                        fill, //填充
+                        fillColor
+                    } = arr[i];
+
+                    ctx.beginPath();
+                    // console.log(path[0][0], path[0][1])
+                    ctx.moveTo(path[0][0], path[0][1])
+                    for (let j in path) {
+                        if (j != 0) {
+                            ctx.lineTo(path[j][0], path[j][1])
+                        }
+
+                    }
+                    ctx.closePath();
+                    if (fill) {
+                        ctx.fillStyle = fillColor;
+                        ctx.fill()
+                    }
+                    if (stroke) {
+
+                        ctx.strokeStyle = strokeColor;
+                        ctx.stroke()
+                    }
+
+                }
+            }
+            /*
+             *   擦除
+             */
+            clear() {
+                this.ctx.clearRect(0, 0, this.width, this.height)
+            }
+
+        }
+        window.onload = _ => {
+            window.myCanvas = new LearnCanvas()
+        }
+    </script>
+</body>
+
+</html>
