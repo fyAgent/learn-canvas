@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #can {
+            border: 1px solid #000;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="1200" height="600" id="can"></canvas>
+
+    <script>
+        arr = []
+        for (let i = 0; i < 200; i++) {
+            arr.push(new Ball(
+                document.querySelector("#can"),
+                Math.random() * 1200,
+                Math.random() * 600,
+                Math.random() * 70,
+                `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`,
+                Math.random() * 360,
+                Math.random() * 10 + 1
+            ));
+        }
+
+        (
+            function ballMove() {
+                window.requestAnimationFrame(() => {
+                    document.querySelector("#can").getContext("2d").clearRect(0, 0, 1200, 600)
+                    for (let i of arr) {
+                        if (i.y > (i.height - i.r)) {
+                            i.y = i.height - i.r;
+                            i.angle = 360 - i.angle;
+                        } else if (i.y < i.r) {
+                            i.y = i.r;
+                            i.angle = 360 - i.angle;
+                        }
+
+                        if (i.x > (i.width - i.r)) {
+                            i.x = i.width - i.r - 10;
+                            i.angle = 180 - i.angle;
+                        } else if (i.x < i.r) {
+                            i.angle = 180 - i.angle;
+                            i.x = i.r + 10;
+                        }
+                        i.x += i.speed * Math.cos(Math.PI * i.angle / 180)
+                        i.y += i.speed * Math.sin(Math.PI * i.angle / 180);
+                        i.ballBirth();
+                    }
+                    ballMove()
+                })
+
+            }
+        )()
+        function Ball(dom, x, y, r, color, angle, speed) {
+            this.width = dom.offsetWidth;
+            this.height = dom.offsetHeight;
+            this.ctx = dom.getContext("2d");
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.color = color,
+                this.angle = angle;
+            this.speed = speed;
+            Ball.prototype.ballBirth = function () {
+                const { ctx, x, y, r, color } = this;
+                ctx.save()
+                ctx.beginPath();
+                ctx.translate(x, y)
+                ctx.scale(r, r);
+                ctx.arc(0, 0, 1, 0, Math.PI * 2);
+                ctx.globalCompositeOperation = "xor"
+                ctx.fillStyle = color
+                ctx.fill()
+                ctx.closePath();
+                ctx.restore();
+            }
+
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+</body>
+
+</html>

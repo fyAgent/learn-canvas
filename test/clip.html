@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>clip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #can {
+            border: 1px solid #000;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="can"></canvas>
+
+    <script>
+        var data = {
+            width: 800,
+            height: 500,
+            x: 400,
+            y: 250,
+            r: 100,
+            vx: 5,
+            vy: 3
+        }
+        var can = document.querySelector("#can");
+        can.width = 800;
+        can.height = 500;
+        var ctx = can.getContext("2d");
+        const { x, y, r } = data;
+        draw();
+        move()
+        function move() {
+            window.requestAnimationFrame(_ => {
+                update();
+                draw();
+                move();
+            })
+
+        }
+        function draw() {
+            const { x, y, r } = data;
+
+
+
+            ctx.save()
+            ctx.beginPath();
+            ctx.clearRect(0, 0, 800, 500);
+
+            ctx.fillStyle = "#000"
+            ctx.fillRect(0, 0, 800, 500);
+            ctx.fill();
+
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+
+            ctx.fillStyle = "#fff";
+            ctx.fill();
+            ctx.clip();
+            ctx.font = "bold 100px Arial";
+            ctx.fillStyle = "blue";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center"
+            ctx.fillText("CANVAS", 400, 150);
+            ctx.fillText("CANVAS", 400, 250);
+            ctx.fillText("CANVAS", 400, 350);
+            ctx.restore()
+        }
+
+        function update() {
+            if (data.x > data.width - data.r) {
+                data.x = data.width - data.r;
+                data.vx = 0 - data.vx
+            }
+            if (data.x < data.r) {
+                data.x = data.r;
+                data.vx = 0 - data.vx
+            }
+            if (data.y > data.height - data.r) {
+                data.y = data.height - data.r;
+                data.vy = 0 - data.vy
+            }
+            if (data.y < data.r) {
+                data.y = data.r;
+                data.vy = 0 - data.vy
+            }
+            data.x += data.vx;
+            data.y += data.vy;
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>

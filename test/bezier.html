@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>贝塞尔曲线</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #can {
+
+            margin: 100px auto 0;
+            display: block;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="full">
+        <canvas id="can"></canvas>
+    </div>
+
+    <script>
+
+        var can = document.querySelector("#can");
+        can.width = can.height = 800;
+        var ctx = can.getContext('2d');
+        drawBezier2d()
+        drawBezier3d()
+        function drawBezier2d() {
+            ctx.beginPath();
+            ctx.moveTo(200, 200)
+            ctx.quadraticCurveTo(450, 100, 640, 200)
+            ctx.stroke();
+            ctx.closePath()
+
+        }
+
+        function drawBezier3d(){
+            ctx.beginPath();
+            ctx.moveTo(400,400)
+            ctx.bezierCurveTo(200,200,800,200,600,400);
+            ctx.stroke()
+            ctx.closePath();
+        }
+
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>

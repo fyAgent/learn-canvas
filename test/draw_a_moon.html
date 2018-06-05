@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>一角弯月</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #can {
+
+            margin: 100px auto 0;
+            display: block;
+            border: 1px solid #000;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="full">
+        <canvas id="can"></canvas>
+    </div>
+    <script>
+        var can = document.querySelector("#can");
+        can.width = can.height = 800;
+        var ctx = can.getContext('2d');
+
+        drawMoon
+
+        function drawMoon() {
+            ctx.save()
+            ctx.beginPath();
+            ctx.arc(400, 400, 200, Math.PI / 2, Math.PI * 3 / 2, true)
+            ctx.stroke();
+            ctx.restore();
+            ctx.save();
+
+            var endx = 400;
+            var endy = 600;
+            var ox = 400
+            var oy = 200;
+            var mx = 1000;
+            var my = 400;
+            var r = 200 / (mx - 400) * (Math.sqrt(Math.pow(200, 2) + Math.pow(mx - 400, 2)));
+
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy)
+            ctx.arcTo(mx, my, endx, endy, r)
+            ctx.stroke();
+
+            ctx.restore()
+
+        }
+        fillMoon(ctx, 2, 400, 200, 200, 30)
+
+        function fillMoon(ctx, d, x, y, R, rot, fillColor) {
+            ctx.save()
+            ctx.translate(x, y);
+            ctx.scale(R, R);
+            ctx.rotate(rot*Math.PI/180);
+            ctx.fillStyle = fillColor || "#fb5";
+            drawPath(ctx, d)
+            ctx.fill();
+            ctx.restore()
+        }
+        function drawPath(ctx, d) {
+            ctx.beginPath();
+            ctx.arc(0, 0, 1, 0.5 * Math.PI, 1.5 * Math.PI, true)
+            ctx.moveTo(0, -1)
+            ctx.arcTo(d, 0, 0, 1, Math.sqrt(d * d + 1) / d)
+            ctx.closePath();
+        }
+
+
+    </script>
+
+</body>
+
+</html>

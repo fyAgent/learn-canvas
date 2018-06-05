@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全局透明度alpha</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #can {
+
+            margin: 100px auto 0;
+            display: block;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="full">
+        <canvas id="can"></canvas>
+    </div>
+    <script>
+        //arcTo(x1, y1, x2, y2, r) //两条折现 x1,y1是moveTo到第一条线的坐标 x2y2是 第一条线终点到第二条线的坐标
+        (function () {
+
+            var can = document.querySelector("#can");
+            can.width = can.height = 800
+            var ctx = can.getContext('2d');
+            test();
+            function test() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.globalAlpha=0.5;
+                ctx.fillStyle = "green";
+                ctx.shadowColor = "rgba(0,0,0,1)";
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+                ctx.shadowBlur = 0;
+                ctx.font = "40px Arial";
+                ctx.fillText("CANVAS", 100, 100)
+
+                ctx.closePath();
+                ctx.restore();
+            }
+
+
+
+
+
+
+        })()
+    </script>
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>globalCompositeOperation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #can {
+
+            margin: 0 auto 0;
+            display: block;
+            border: 1px solid #000;
+        }
+
+        li{
+            float: left;
+
+            list-style: none;
+            padding: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="full">
+        <canvas id="can"></canvas>
+        <ul>
+            <li>source-over</li>
+            <li>source-atop</li>
+            <li>source-in</li>
+            <li>source-out</li>
+            <li>destination-over</li>
+            <li>destination-atop</li>
+            <li>destination-in</li>
+            <li>destination-out</li>
+            <li>lighter</li>
+            <li>copy</li>
+            <li>xor</li>
+        </ul>
+    </div>
+
+
+    <script>
+
+        (function () {
+            var can = document.querySelector("#can");
+            can.width = 800;
+            can.height = 600;
+            var ctx = can.getContext('2d');
+            draw(ctx, "source-over")
+            var dom =document.getElementsByTagName("li");
+            for(var i of dom ) {
+                
+                i.onclick=function(){
+                    draw(ctx, this.innerText)
+                }
+            }
+
+            function draw(ctx, type) {
+                console.log(type)
+                ctx.clearRect(0, 0, can.width, can.height)
+                ctx.save();
+         
+               
+                (function fillRect() {
+                    ctx.beginPath();
+                    ctx.fillStyle = "blue"
+                    ctx.fillRect(200, 100, 200, 200)
+                    ctx.closePath();
+                   
+                })()
+                fillTraingle()
+                function fillTraingle() {
+                   ctx.globalCompositeOperation = type;
+                    ctx.beginPath();
+                    ctx.fillStyle = "red"
+                    ctx.translate(60, -20)
+                    ctx.moveTo(300, 200)
+
+                    ctx.lineTo(430, 400)
+                    ctx.lineTo(170, 400);
+                    
+                    ctx.fill()
+                    ctx.closePath(); 
+                }
+                ctx.restore();
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        })()
+
+    </script>
+</body>
+
+</html>

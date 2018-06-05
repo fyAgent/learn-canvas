@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas交互</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #can {
+            border: 1px solid #000;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <canvas width="1200" height="600" id="can">
+
+    </canvas>
+
+    <script>
+
+        var can = document.querySelector("#can");
+        const ctx = can.getContext("2d");
+        var ball = [];
+        draw()
+        function draw() {
+            ctx.fillStyle = "blue";
+            for (let i = 0; i < 10; i++) {
+                const obj = {
+                    x: Math.random() * 1200,
+                    y: Math.random() * 600,
+                    r: Math.random() * 100,
+
+                }
+                ball.push(obj)
+                ctx.beginPath();
+                ctx.arc(obj.x, obj.y, obj.r, 0, 2 * Math.PI)
+                ctx.fill();
+
+            }
+        }
+        can.onclick = function () {
+            var x = event.clientX - can.getBoundingClientRect().left;
+            var y = event.clientY - can.getBoundingClientRect().top;
+            console.log(x, y)
+          
+            for (let i of ball) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(i.x, i.y, i.r, 0, 2 * Math.PI)
+                if (ctx.isPointInPath(x, y))
+                    ctx.fillStyle = "red";
+                ctx.fill();
+                ctx.restore()
+
+            }
+            
+        }
+
+
+
+    </script>
+</body>
+
+</html>

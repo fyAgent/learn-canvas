@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路径和剪纸效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #can {
+            border: 1px solid #000;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="1200" height="600" id="can"></canvas>
+
+    <script>
+        var can = document.querySelector("#can");
+        const ctx = can.getContext("2d");
+        ctx.beginPath()
+        ctx.arc(600, 300, 200, 0, 2 * Math.PI,true)
+        ctx.arc(600, 300, 100, 0, 2 * Math.PI,false);
+        ctx.fillStyle="#058";
+        ctx.shadowColor="gray";
+        ctx.shadowOffsetX=10;
+        ctx.shadowOffsetY=10;
+        ctx.fill();
+        ctx.closePath();
+
+    </script>
+</body>
+
+</html>

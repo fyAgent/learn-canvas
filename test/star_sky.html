@@ -24,7 +24,6 @@
                 this.can = document.createElement("canvas");
                 this.width = this.can.width = this.el.offsetWidth;
                 this.height = this.can.height = this.el.offsetHeight;
-
                 this.el.appendChild(this.can)
                 this.ctx = this.can.getContext("2d");
                 this.init();
@@ -39,10 +38,12 @@
                     const R = Math.random() * 10 + 4,
 
                         marginLeft = Math.random() * width,
-                        marginTop = Math.random() * height*0.65,
+                        marginTop = Math.random() * height * 0.65,
                         rotate = Math.random() * 360;
                     this.drawStar(R, marginLeft, marginTop, rotate, "rgb(255,178,29 )", "#000")
                 }
+                this.fillMoon(this.ctx, 1.2, this.width - 200, 150, 50, 30);
+                this.drawLand()
             }
             // 绘制矩形
             drawRect(marginLeft, marginTop, width, height, fillColor = "#000", strokeColor) {
@@ -128,6 +129,47 @@
                 }
                 ctx.closePath();
             }
+            // 画月亮
+            fillMoon(ctx, d, x, y, R, rot, fillColor) {
+                ctx.save()
+                ctx.translate(x, y);
+                ctx.scale(R, R);
+                ctx.rotate(rot / 180 * Math.PI);
+                ctx.fillStyle = fillColor || "#fb5";
+                this.drawMoonPath(ctx, d)
+                ctx.fill();
+                ctx.restore()
+            }
+            drawMoonPath(ctx, d) {
+                ctx.beginPath();
+                ctx.arc(0, 0, 1, 0.5 * Math.PI, 1.5 * Math.PI, true)
+                ctx.moveTo(0, -1)
+                ctx.arcTo(d, 0, 0, 1, Math.sqrt(d * d + 1) / d)
+                ctx.closePath();
+            }
+            // 画陆地
+            drawLand() {
+                const {
+                    ctx,
+                    height,
+                    width
+                } = this;
+                ctx.save()
+                ctx.beginPath();
+                ctx.moveTo(0, height - 300)
+                ctx.bezierCurveTo(width * 1 / 3, height - 500, width * 2 / 3, height - 100, width, height - 300);
+                ctx.lineTo(width, height);
+                ctx.lineTo(0, height);
+                const landStyle = ctx.createLinearGradient(0,height, 0, 0);
+                landStyle.addColorStop(0,"#020");
+                landStyle.addColorStop(1, "#580");
+                ctx.fillStyle=landStyle;
+                ctx.fill()
+                ctx.closePath();
+                ctx.restore();
+
+            }
+
 
         }
         window.onload = () => {
