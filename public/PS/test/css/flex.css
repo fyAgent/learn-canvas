@@ -1,0 +1,409 @@
+/* 主要写的布局样式 特别是flex布局 */
+
+    /* body {
+        -webkit-overflow-scrolling: touch!important;
+        overflow-scrolling:touch !important;
+    } */
+
+/*万能清浮动  */
+.pointer{
+    cursor: pointer;
+}
+.clearBox:after {
+    content: "" !important;
+    clear: both !important;
+    display: block !important;
+    height: 0 !important;
+}
+
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: "wujiu 1791836545 15733202715";
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+/*浮动  */
+
+.floatL {
+    float: left;
+}
+
+.floatR {
+    float: right;
+}
+
+/*字体*/
+
+.textC {
+    text-align: center;
+}
+
+/*位置*/
+
+/*display  */
+
+.d_block {
+    display: block;
+}
+
+.d_n {
+    display: none;
+}
+
+.d_inline {
+    display: inline;
+}
+
+.d_inlineB {
+    display: inline-block;
+}
+
+/*position  */
+
+.p_a {
+    position: absolute !important;
+}
+
+.p_r {
+    position: relative !important;
+}
+
+.p_f {
+    position: fixed !important;
+}
+
+.p_i {
+    position: initial !important;
+}
+
+.pos_C {
+    position: absolute !important;
+    margin: auto;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+}
+
+.b0 {
+    bottom: 0;
+}
+
+.t0 {
+    top: 0
+}
+
+.r0 {
+    right: 0
+}
+
+.l0 {
+    left: 0;
+}
+
+/*background  */
+
+.bd_f {
+    background: #fff;
+}
+
+.bd_e {
+    background: #eee;
+}
+
+.bd_b {
+    background: #000;
+}
+.bd_cover{
+    background: rgba(0,0,0,0.5)
+}
+
+/*color  */
+
+.c_f {
+    color: #fff;
+}
+
+.c_c {
+    color: #ccc;
+}
+
+.c_b {
+    color: #000;
+}
+
+.c_gray {
+    color: gray;
+}
+
+/*flex  */
+
+.flex {
+    /* display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex; */
+    display: flex;
+    /* -ms-flex-align: stretch;
+    align-items: stretch; */
+}
+
+.row_r {
+    flex-direction: row-reverse;
+}
+
+.column_r {
+    flex-direction: column-reverse;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.flexC {
+    /* display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex; */
+    display: flex;
+    align-items: center;
+    /* -ms-flex-align: center;
+    flex-align: center;
+     */
+}
+
+.flexT {
+    /* display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex; */
+    display: flex;
+    align-items: flex-start;
+}
+
+.flexE {
+    /* display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex; */
+    display: flex;
+    align-items: flex-end;
+}
+
+.alignC {
+    align-items: center;
+}
+
+.alignB {
+    display: flex;
+    align-items: baseline;
+}
+
+.alignT {
+    align-items: flex-start;
+}
+
+.alignE {
+    align-items: flex-end;
+}
+
+.flexW {
+    flex-wrap: wrap;
+}
+
+.alignSf {
+    align-self: stretch;
+}
+
+.alignSc {
+    align-self: center;
+}
+
+.alignSt {
+    align-self: flex-start !important;
+}
+
+.alignSe {
+    align-self: flex-end !important;
+}
+
+.flexS0 {
+    flex-shrink: 0;
+}
+
+.flexS1 {
+    flex-shrink: 1;
+}
+
+.flex50 {
+    flex-basis: 50%;
+}
+
+.justC {
+    /* -ms-flex-pack: center; */
+    justify-content: center;
+}
+
+.justSb {
+    /* -ms-flex-pack: justify; */
+    justify-content: space-between;
+}
+
+.justSa {
+    justify-content: space-around;
+}
+
+.justR {
+    justify-content: flex-end;
+}
+
+.grow1 {
+    flex-grow: 1;
+}
+
+.grow2 {
+    flex-grow: 2
+}
+
+.grow0 {
+    flex-grow: 0;
+}
+
+.shrink1 {
+    flex-shrink: 1;
+}
+
+.shrink0 {
+    flex-shrink: 0;
+}
+
+/*flex  */
+
+/*大小  */
+
+.full {
+    width: 100%;
+    height: 100%;
+}
+
+.fullX {
+    width: 100%;
+}
+
+.fullY {
+    height: 100%;
+}
+
+.halfX {
+    width: 50%;
+}
+
+.halfY {
+    height: 50%;
+}
+
+margin0 {
+    margin: 0
+}
+
+.padX {
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+.padX2 {
+    padding-right: 2.5%;
+    padding-left: 2.5%;
+}
+
+.padY {
+    padding-top: 0.11rem;
+    padding-bottom: 0.11rem;
+}
+
+/*大小  */
+
+.overH {
+    overflow: hidden;
+}
+
+.overX {
+    overflow-x: hidden;
+}
+
+.overS {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.overSy {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.overSx {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*不换行 超出省略号  */
+
+.ell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ell2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/*换行显示省略号*/
+
+.ell1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*层级  */
+
+.zIdx100 {
+    z-index: 100;
+}
+
+.zIdx1000 {
+    z-index: 1000;
+}
+
+/*bar*/
+
+.hide_bar::-webkit-scrollbar {
+    display: none;
+}

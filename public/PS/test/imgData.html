@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>imgData</title>
+    <link rel="stylesheet" href="./css/flex.css">
+    <style>
+        span {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flexC justSb fullX ">
+        <canvas id="can" style="display: block;float:left;border:1px solid #aaa;"></canvas>
+        <canvas id="canb" style="display: block;float:right;border:1px solid #aaa;"></canvas>
+
+    </div>
+    <div class="fullX flexC justC">
+        <span class="pointer" onclick="gray()">gray</span>
+        <span class="pointer" onclick="blackEffect()">black effect</span>
+        <span class="pointer" onclick="reverseEffect()">reverse effect</span>
+        <span class="pointer" onclick="blurEffect()">blur effect</span>
+        <span class="pointer" onclick="mosaicEffect()">mosaic effect</span>
+    </div>
+    <script>
+
+        const can = document.querySelector("#can");
+        const ctx = can.getContext("2d");
+        const canb = document.querySelector("#canb");
+        const ctxb = canb.getContext("2d");
+        can.width = canb.width = 600;
+        can.height = canb.height = 300;
+        const img = new Image();
+        img.src = "./image/bg2.png"
+        window.onload = _ => {
+            drawA();
+        }
+        function drawA() {
+            ctx.drawImage(img, 0, 0, can.width, can.height)
+        }
+        function gray() {//灰度转化
+            const imgData = ctx.getImageData(0, 0, can.width, can.height)
+            const px = imgData.data;
+            for (let i = 0; i < can.width * can.height; i++) {
+
+                r = px[i * 4 + 0];
+                g = px[i * 4 + 1];
+                b = px[i * 4 + 2];
+                a = px[i * 4 + 3];
+                const gray = r * 0.3 + g * 0.59 + b * 0.11;
+
+                imgData.data[i * 4 + 0] = gray;
+                imgData.data[i * 4 + 1] = gray;
+                imgData.data[i * 4 + 2] = gray;
+
+            }
+            ctxb.putImageData(imgData, 0, 0, 0, 0, can.width, can.height);
+        }
+        function reverseEffect() {//反色转化
+            const imgData = ctx.getImageData(0, 0, can.width, can.height)
+            const px = imgData.data;
+            for (let i = 0; i < can.width * can.height; i++) {
+
+                r = px[i * 4 + 0];
+                g = px[i * 4 + 1];
+                b = px[i * 4 + 2];
+                a = px[i * 4 + 3];
+
+                imgData.data[i * 4 + 0] = 255 - r;
+                imgData.data[i * 4 + 1] = 255 - g;
+                imgData.data[i * 4 + 2] = 255 - b;
+
+            }
+            ctxb.putImageData(imgData, 0, 0, 0, 0, can.width, can.height);
+        }
+        function blackEffect() {//黑白转化
+            const imgData = ctx.getImageData(0, 0, can.width, can.height)
+            const px = imgData.data;
+            for (let i = 0; i < can.width * can.height; i++) {
+
+                r = px[i * 4 + 0];
+                g = px[i * 4 + 1];
+                b = px[i * 4 + 2];
+                a = px[i * 4 + 3];
+                const gray = r * 0.3 + g * 0.59 + b * 0.11;
+                let result;
+                if (gray > 255 / 2)
+                    result = 255;
+                else
+                    result = 0;
+                imgData.data[i * 4 + 0] = result;
+                imgData.data[i * 4 + 1] = result;
+                imgData.data[i * 4 + 2] = result;
+
+            }
+            ctxb.putImageData(imgData, 0, 0, 0, 0, can.width, can.height);
+        }
+        function blurEffect() {//模糊
+            const imgData = ctx.getImageData(0, 0, can.width, can.height)
+            const px = imgData.data;
+            const blurR = 2;
+            const blurRNum = Math.pow((blurR * 2 + 1), 2);
+            for (let i = blurR; i < can.height - blurR; i++) {
+                for (let j = blurR; j < can.width - blurR; j++) {
+                    var totalr = 0; totalg = 0; totalb = 0;
+                    for (let dx = -blurR; dx <= blurR; dx++) {
+                        for (let dy = -blurR; dy <= blurR; dy++) {
+                            const x = i + dx;
+                            const y = j + dy;
+                            const p = x * can.width + y;
+                            totalr += px[p * 4 + 0]
+                            totalg += px[p * 4 + 1]
+                            totalb += px[p * 4 + 2]
+                        }
+                    }
+                    const thisp = i * can.width + j;
+                    imgData.data[thisp * 4 + 0] = totalr / blurRNum;
+                    imgData.data[thisp * 4 + 1] = totalg / blurRNum;
+                    imgData.data[thisp * 4 + 2] = totalb / blurRNum;
+                }
+            }
+            ctxb.putImageData(imgData, 0, 0, 0, 0, can.width, can.height);
+        }
+        function mosaicEffect() {//马赛克
+            const imgData = ctx.getImageData(0, 0, can.width, can.height)
+            const px = imgData.data;
+            const size = 2;
+            const sizeNum = Math.pow((size * 2 + 1), 2);
+            for (let i = size; i < can.height - size; i += size) {
+                for (let j = size; j < can.width - size; j += size) {
+                    var totalr = 0; totalg = 0; totalb = 0;
+
+
+                    for (let dx = -size; dx <= size; dx++) {
+                        for (let dy = -size; dy <= size; dy++) {
+                            const x = i + dx;
+                            const y = j + dy;
+                            const p = x * can.width + y;
+                            totalr += px[p * 4 + 0]
+                            totalg += px[p * 4 + 1]
+                            totalb += px[p * 4 + 2]
+                        }
+                    }
+
+                    const thisp = i * can.width + j;
+                    const resultR = totalr / sizeNum;
+                    const resultG = totalg / sizeNum;
+                    const resultB = totalb / sizeNum;
+                    for (let dx = -size; dx <= size; dx++) {
+                        for (let dy = -size; dy <= size; dy++) {
+                            const x = i + dx;
+                            const y = j + dy;
+                            const p = x * can.width + y;
+                            imgData.data[p * 4 + 0] = resultR;
+                            imgData.data[p * 4 + 1] = resultG;
+                            imgData.data[p * 4 + 2] = resultB;
+                        }
+                    }
+
+
+
+                }
+            }
+            ctxb.putImageData(imgData, 0, 0, 0, 0, can.width, can.height);
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>放大镜</title>
+</head>
+
+<body>
+    <canvas id="can" style="display: block;margin:0 auto;border:1px solid #aaa;box-sizing: border-box"></canvas>
+    <canvas id="lgCan" style="display:none;"></canvas>
+    <script>
+
+        let can = document.querySelector("#can");
+        let ctx = can.getContext("2d");
+        let img = new Image();
+        let lgCan = document.querySelector("#lgCan");
+        let lgCtx = lgCan.getContext("2d");
+
+        const width = 800;
+        const height = 450;
+        const scale = 2;
+        can.width = width;
+        can.height = height;
+        lgCan.width = width * scale;
+        lgCan.height = height * scale;
+        let point;
+        let isMouseDown = false;
+
+        window.onload = _ => {
+
+            img.src = "./image/bg_lg.png";
+            img.onload = e => {
+                drawCan()
+                drawLgCan();
+            }
+
+
+
+            can.onmousedown = e => {
+                e.preventDefault();
+                point = getPoint(e.clientX, e.clientY, can)
+                isMouseDown = true;
+                drawCan()
+            }
+            can.onmousemove = e => {
+                e.preventDefault()
+                if (isMouseDown) point = getPoint(e.clientX, e.clientY, can);
+
+                drawCan()
+            }
+            can.onmouseup = e => {
+                e.preventDefault();
+                isMouseDown = false;
+                drawCan()
+            }
+            can.onmouseout = e => {
+                e.preventDefault()
+                isMouseDown = false;
+                drawCan()
+            }
+        }
+
+        function drawCan() {
+            ctx.clearRect(0, 0, width, height)
+            ctx.save()
+
+            ctx.drawImage(img, 0, 0, width, height);
+            if (isMouseDown) {
+                drawloupe(point)
+
+            }
+            ctx.restore()
+
+
+        }
+        function drawLgCan() {
+            lgCtx.save()
+            lgCtx.drawImage(img, 0, 0, width * 2, height * 2)
+            lgCtx.restore()
+
+        }
+        function drawloupe(point) {
+            const mr = 100;
+            const sx = point.x * scale - mr;
+            const sy = point.y * scale - mr;
+            const dx = point.x - mr;
+            const dy = point.y - mr;
+            ctx.save();
+            ctx.beginPath();
+
+            ctx.arc(point.x, point.y, mr, 0, 2 * Math.PI);
+
+            ctx.closePath();
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = "#069";
+            ctx.stroke();
+            ctx.clip()
+            ctx.drawImage(lgCan, sx, sy, 2 * mr, 2 * mr, dx, dy, 2 * mr, 2 * mr)
+            ctx.restore();
+
+
+
+        }
+        function getPoint(x, y, dom) {//获取相对于目标元素的坐标 传入相对于屏幕左上角的坐标
+            const rect = dom.getBoundingClientRect()
+            return {
+                x: x - rect.left,
+                y: y - rect.top
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>水印</title>
+</head>
+
+<body style="background: #000;">
+    <canvas id="can" style="display: block;margin:0 auto;border:1px solid #aaa;"></canvas>
+    <canvas id="water-mark" style="margin:20px auto;display:none;"></canvas>
+    <input id="range" type="range" value="1" min="0.5" max="3.0" step="0.01" style="display: block;margin: 20px auto;width:800px;">
+    <script>
+
+        let can = document.querySelector("#can");
+        let ctx = can.getContext("2d");
+        let img = new Image();
+        let range = document.getElementById("range");
+        let waterCanvas = document.querySelector("#water-mark");
+        let waterCanvasCtx = waterCanvas.getContext("2d");
+        waterCanvas.width = 600;
+        waterCanvas.height = 100;
+        const width = 1152;
+        const height = 530;
+        can.width = width;
+        can.height = height;
+
+        window.onload = _ => {
+            img.src = "./image/bg_lg.png";
+            img.onload = e => {
+                // ctx.drawImage(img, 0, 0)
+                // ctx.drawImage(img, 0,0,width, height)
+                // ctx.drawImage(img, 100, 100, 400, 400, 0, 0, 400, 400)
+                drawImageScale(1)
+                range.onmousemove = e => {
+                    drawImageScale(Number(e.target.value))
+                }
+            }
+
+            function drawImageScale(scale) {
+                const imgHeight = height * scale;
+                const imgWidth = width * scale;
+                const dx = (width - imgWidth) / 2;
+                const dy = (height - imgHeight) / 2;
+
+                ctx.save()
+                ctx.clearRect(0, 0, width, height)
+                ctx.drawImage(img, dx, dy, imgWidth, imgHeight);
+                ctx.drawImage(waterCanvas, width - waterCanvas.width, height - waterCanvas.height)
+                ctx.restore();
+
+
+            }
+            initWaterMark();
+            function initWaterMark() {
+                waterCanvasCtx.save();
+                waterCanvasCtx.font = "bold 50px Arial";
+                waterCanvasCtx.lineWidth = 1;
+                waterCanvasCtx.strokeStyle = "rgba(255,255,255,0.5)";
+                waterCanvasCtx.textAlign = "center";
+                waterCanvasCtx.textBaseline = "middle"
+                waterCanvasCtx.strokeText("==不上不下是中==", waterCanvas.width / 2, waterCanvas.height / 2)
+                waterCanvasCtx.stroke()
+                waterCanvasCtx.restore();
+            }
+
+
+
+
+        }
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
